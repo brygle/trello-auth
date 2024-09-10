@@ -6,6 +6,7 @@ import {
   faClose,
   faAngleDown
 } from '@fortawesome/free-solid-svg-icons';
+import { User } from '@models/user.model';
 import { AuthService } from '@services/auth.service';
 
 @Component({
@@ -21,10 +22,19 @@ export class NavbarComponent {
   isOpenOverlayAvatar = false;
   isOpenOverlayBoards = false;
 
+  user: User | null = null;
+
   constructor(
     private authService: AuthService,
     private router: Router
   ) {}
+
+  ngOnInit() {
+    this.authService.getProfile()
+      .subscribe((user: User) => {
+        this.user = user
+      });
+  }
 
   logout() {
     this.authService.logout();
